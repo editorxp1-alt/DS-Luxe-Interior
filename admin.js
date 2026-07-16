@@ -130,74 +130,20 @@ function ytId(url) {
   return m ? m[1] : url;
 }
 
-// ─── 4. Image Upload (Local Server) ───────────
-document.getElementById("image-upload").onchange = async (e) => {
-  const files = e.target.files;
-  if (!files || files.length === 0) return;
-  
+// ─── 4. Image URL Add ───────────
+document.getElementById("add-img-btn").onclick = () => {
+  const input = document.getElementById("img-url");
+  const url = input.value.trim();
+  if (!url) return;
   const service = galleryData.find((s) => s.slug === currentSlug);
   if (!service) return;
   if (!service.images) service.images = [];
-  
-  const progressBar = document.getElementById("upload-progress");
-  const progressFill = document.getElementById("progress-fill");
-  const uploadBox = document.querySelector(".upload-box");
-  uploadBox.classList.add("uploading");
-  progressBar.classList.remove("hidden");
-  
-  const total = files.length;
-  let uploaded = 0;
-  let failed = 0;
-  uploadMsg.textContent = "Uploading 0/" + total + "...";
-  uploadMsg.style.color = "#60a5fa";
-  
-  for (const file of files) {
-    try {
-      const formData = new FormData();
-      formData.append("image", file);
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
-      const json = await res.json();
-      if (json.success) {
-        service.images.push(json.data.url);
-        uploaded++;
-      } else {
-        failed++;
-        const errMsg = json.error ? json.error.message : JSON.stringify(json);
-        console.error("Upload error:", errMsg);
-        uploadMsg.textContent = "❌ Error: " + errMsg;
-        uploadMsg.style.color = "#f87171";
-      }
-    } catch (err) {
-      failed++;
-      console.error("Upload error:", err);
-      uploadMsg.textContent = "❌ Network error: " + err.message;
-      uploadMsg.style.color = "#f87171";
-    }
-    const pct = Math.round(((uploaded + failed) / total) * 100);
-    progressFill.style.width = pct + "%";
-    if (failed === 0)
-      uploadMsg.textContent = "Uploading " + (uploaded + failed) + "/" + total + "...";
-  }
-  
-  uploadBox.classList.remove("uploading");
-  progressFill.style.width = "100%";
-  if (failed === 0) {
-    uploadMsg.textContent = "✅ " + uploaded + " image(s) uploaded! Don't forget to Save.";
-    uploadMsg.style.color = "#4ade80";
-  } else if (uploaded > 0) {
-    uploadMsg.textContent = "⚠️ " + uploaded + " uploaded, " + failed + " failed.";
-    uploadMsg.style.color = "#fbbf24";
-  }
-  setTimeout(() => {
-    progressBar.classList.add("hidden");
-    progressFill.style.width = "0%";
-  }, 2000);
-  
+  service.images.push(url);
+  input.value = "";
   renderMedia();
-  e.target.value = "";
+  uploadMsg.textContent = "✅ Image added! Don't forget to Save All Changes.";
+  uploadMsg.style.color = "#4ade80";
+  setTimeout(() => { uploadMsg.textContent = ""; }, 3000);
 };
 
 // ─── 5. Add YouTube Video ───────────────────────────────────

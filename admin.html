@@ -34,17 +34,14 @@
       </div>
 
       <div class="edit-area">
-        <!-- Image Upload — Simple Gallery Pick -->
+        <!-- Image Add via URL -->
         <div class="upload-box">
-          <h3>📷 Add Photo</h3>
-          <label for="image-upload" class="file-pick-label">
-            <span class="pick-icon">+</span>
-            <span>Choose from Gallery</span>
-          </label>
-          <input type="file" id="image-upload" accept="image/*" multiple style="display:none">
-          <div id="upload-progress" class="progress-bar hidden">
-            <div id="progress-fill" class="progress-fill"></div>
-          </div>
+          <h3>📷 Add Photo URL</h3>
+          <p style="font-size:12px; color:#9ca3af; margin-bottom: 12px; line-height: 1.4;">
+            Vercel par direct upload kaam nahi karta. Apni image ko <a href="https://postimages.org/" target="_blank" style="color:#60a5fa; text-decoration: underline;">PostImages</a> ya <a href="https://imgur.com/" target="_blank" style="color:#60a5fa; text-decoration: underline;">Imgur</a> par upload karein, aur wahan se <b>Direct Link</b> (jo .jpg ya .png se end hota ho) copy karke yahan paste karein.
+          </p>
+          <input type="text" id="img-url" placeholder="Paste Direct Image Link (e.g., https://.../image.jpg)" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #4b5563; background: #374151; color: white; margin-bottom: 10px;">
+          <button id="add-img-btn" class="action-btn">Add Image</button>
           <p id="upload-msg" class="msg"></p>
         </div>
 
