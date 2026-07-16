@@ -213,6 +213,7 @@ document.getElementById("image-upload").onchange = async (e) => {
       formData.append("image", file);
       const res = await fetch("https://api.imgbb.com/1/upload?key=" + imgbbKey, {
         method: "POST",
+        referrerPolicy: "no-referrer",
         body: formData,
       });
       const json = await res.json();
