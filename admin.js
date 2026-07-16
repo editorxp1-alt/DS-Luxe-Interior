@@ -13,11 +13,9 @@ const saveMsg = document.getElementById("save-msg");
 const uploadMsg = document.getElementById("upload-msg");
 const serviceSelect = document.getElementById("service-select");
 const mediaGrid = document.getElementById("media-grid");
-const keyMsg = document.getElementById("key-msg");
 
 let galleryData = [];
 let currentSlug = "";
-let imgbbKey = localStorage.getItem("ds_imgbb_key") || "";
 
 // ─── Utility ────────────────────────────────────────────────
 async function hashPassword(pwd) {
@@ -30,53 +28,6 @@ async function hashPassword(pwd) {
     .join("");
 }
 
-// ─── Settings ────────────────────────────────
-window.toggleSettings = function toggleSettings() {
-  const body = document.getElementById("settings-body");
-  const arrow = document.getElementById("settings-arrow");
-  body.classList.toggle("hidden");
-  arrow.classList.toggle("open");
-}
-
-function loadSavedKey() {
-  if (imgbbKey) {
-    const keyInput = document.getElementById("imgbb-key");
-    if (keyInput) keyInput.value = imgbbKey;
-    updateKeyStatus();
-  }
-}
-
-function updateKeyStatus() {
-  const span = document.querySelector(".settings-header span:nth-child(2)");
-  if (!span) return;
-  if (imgbbKey) {
-    span.innerHTML = 'Upload Settings <span style="font-size:10px;background:#10b981;color:#fff;padding:2px 6px;border-radius:4px;margin-left:8px;">✓ Key Saved</span>';
-  } else {
-    span.innerHTML = 'Upload Settings <span style="font-size:10px;background:#ef4444;color:#fff;padding:2px 6px;border-radius:4px;margin-left:8px;">Key Missing</span>';
-  }
-}
-
-const saveKeyBtn = document.getElementById("save-key-btn");
-if (saveKeyBtn) {
-  saveKeyBtn.onclick = () => {
-    const val = document.getElementById("imgbb-key").value.trim();
-    if (val) {
-      imgbbKey = val;
-      localStorage.setItem("ds_imgbb_key", val);
-      keyMsg.textContent = "✅ Key saved securely in your browser.";
-      keyMsg.style.color = "#4ade80";
-      updateKeyStatus();
-    } else {
-      imgbbKey = "";
-      localStorage.removeItem("ds_imgbb_key");
-      keyMsg.textContent = "Key removed.";
-      keyMsg.style.color = "#f87171";
-      updateKeyStatus();
-    }
-    setTimeout(() => { keyMsg.textContent = ""; }, 3000);
-  };
-}
-
 // ─── 1. Login ───────────────────────────────────────────────
 document.getElementById("login-btn").onclick = async () => {
   const entered = document.getElementById("admin-pass").value.trim();
@@ -85,7 +36,6 @@ document.getElementById("login-btn").onclick = async () => {
   if (hash !== ADMIN_HASH) return (loginMsg.textContent = "❌ Wrong password.");
   loginSection.classList.add("hidden");
   panelSection.classList.remove("hidden");
-  loadSavedKey();
   loadData();
 };
 
@@ -180,14 +130,8 @@ function ytId(url) {
   return m ? m[1] : url;
 }
 
-// ─── 4. Image Upload (ImgBB API) ───────────
+// ─── 4. Image Upload (Local Server) ───────────
 document.getElementById("image-upload").onchange = async (e) => {
-  if (!imgbbKey) {
-    uploadMsg.textContent = "❌ Please enter and save your ImgBB API key first (in Upload Settings).";
-    uploadMsg.style.color = "#f87171";
-    toggleSettings();
-    return;
-  }
   const files = e.target.files;
   if (!files || files.length === 0) return;
   
@@ -211,9 +155,8 @@ document.getElementById("image-upload").onchange = async (e) => {
     try {
       const formData = new FormData();
       formData.append("image", file);
-      const res = await fetch("https://api.imgbb.com/1/upload?key=" + imgbbKey, {
+      const res = await fetch("/api/upload", {
         method: "POST",
-        referrerPolicy: "no-referrer",
         body: formData,
       });
       const json = await res.json();
@@ -223,13 +166,13 @@ document.getElementById("image-upload").onchange = async (e) => {
       } else {
         failed++;
         const errMsg = json.error ? json.error.message : JSON.stringify(json);
-        console.error("ImgBB upload error:", errMsg);
+        console.error("Upload error:", errMsg);
         uploadMsg.textContent = "❌ Error: " + errMsg;
         uploadMsg.style.color = "#f87171";
       }
     } catch (err) {
       failed++;
-      console.error("ImgBB upload error:", err);
+      console.error("Upload error:", err);
       uploadMsg.textContent = "❌ Network error: " + err.message;
       uploadMsg.style.color = "#f87171";
     }
