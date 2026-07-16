@@ -28,11 +28,14 @@
           <span id="settings-arrow" class="arrow">▼</span>
         </div>
         <div id="settings-body" class="settings-body hidden">
-          <p class="settings-info">
-            Uploads are now saved directly to the local server storage. API Key is no longer required.
-          </p>
-          <div class="key-input-row" style="display:none;">
-            <input type="text" id="imgbb-key" />
+          <p class="settings-info">Image upload ke liye ImgBB API key chahiye. Ek baar lagao, phir yaad rakhega.</p>
+          <ol class="settings-steps">
+            <li>👉 <a href="https://api.imgbb.com/" target="_blank">ImgBB.com</a> pe free account banao</li>
+            <li>👉 Dashboard se API Key copy karo</li>
+            <li>👉 Neeche paste karke Save karo</li>
+          </ol>
+          <div class="key-input-row">
+            <input type="text" id="imgbb-key" placeholder="API Key paste karo yahan..." />
             <button id="save-key-btn" class="key-save-btn">Save Key</button>
           </div>
           <p id="key-msg" class="msg"></p>

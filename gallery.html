@@ -510,9 +510,15 @@
       let imgs = [];
       let lbI = 0;
 
+      const JSONBIN_ID = '6a5772b4da38895dfe60ab40';
+      const JSONBIN_KEY = '$2a$10$dySlyKWtDmqIrrOcquURWeinFotbSXwgwZHeC6Bqu9RHcaE5T5KWu';
+      const GET_URL = "https://api.jsonbin.io/v3/b/" + JSONBIN_ID;
+
       async function init() {
         try {
-          const res = await fetch(`/api/gallery`);
+          const res = await fetch(GET_URL, {
+            headers: { 'X-Master-Key': JSONBIN_KEY }
+          });
           if (!res.ok) throw new Error("fetch failed");
           const json = await res.json();
           const data = json.record || [];

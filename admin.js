@@ -2,8 +2,8 @@ const ADMIN_HASH =  "94b271d20205e6af0e88cb7b7c3cc60d479a283c211cf8379c0d21a3d58
 
 const JSONBIN_ID = '6a5772b4da38895dfe60ab40';
 const JSONBIN_KEY = '$2a$10$dySlyKWtDmqIrrOcquURWeinFotbSXwgwZHeC6Bqu9RHcaE5T5KWu';
-const GET_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_ID}`;
-const PUT_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_ID}`;
+const GET_URL = "https://api.jsonbin.io/v3/b/" + JSONBIN_ID;
+const PUT_URL = "https://api.jsonbin.io/v3/b/" + JSONBIN_ID;
 
 // DOM Elements
 const loginSection = document.getElementById("login-section");
@@ -17,6 +17,7 @@ const keyMsg = document.getElementById("key-msg");
 
 let galleryData = [];
 let currentSlug = "";
+let imgbbKey = localStorage.getItem("ds_imgbb_key") || "";
 
 // ─── Utility ────────────────────────────────────────────────
 async function hashPassword(pwd) {
@@ -37,11 +38,44 @@ window.toggleSettings = function toggleSettings() {
   arrow.classList.toggle("open");
 }
 
-document.getElementById("save-key-btn").onclick = () => {
-  keyMsg.textContent = "✅ Updated! Uploads now use local server.";
-  keyMsg.style.color = "#4ade80";
-  setTimeout(() => { keyMsg.textContent = ""; }, 3000);
-};
+function loadSavedKey() {
+  if (imgbbKey) {
+    const keyInput = document.getElementById("imgbb-key");
+    if (keyInput) keyInput.value = imgbbKey;
+    updateKeyStatus();
+  }
+}
+
+function updateKeyStatus() {
+  const span = document.querySelector(".settings-header span:nth-child(2)");
+  if (!span) return;
+  if (imgbbKey) {
+    span.innerHTML = 'Upload Settings <span style="font-size:10px;background:#10b981;color:#fff;padding:2px 6px;border-radius:4px;margin-left:8px;">✓ Key Saved</span>';
+  } else {
+    span.innerHTML = 'Upload Settings <span style="font-size:10px;background:#ef4444;color:#fff;padding:2px 6px;border-radius:4px;margin-left:8px;">Key Missing</span>';
+  }
+}
+
+const saveKeyBtn = document.getElementById("save-key-btn");
+if (saveKeyBtn) {
+  saveKeyBtn.onclick = () => {
+    const val = document.getElementById("imgbb-key").value.trim();
+    if (val) {
+      imgbbKey = val;
+      localStorage.setItem("ds_imgbb_key", val);
+      keyMsg.textContent = "✅ Key saved securely in your browser.";
+      keyMsg.style.color = "#4ade80";
+      updateKeyStatus();
+    } else {
+      imgbbKey = "";
+      localStorage.removeItem("ds_imgbb_key");
+      keyMsg.textContent = "Key removed.";
+      keyMsg.style.color = "#f87171";
+      updateKeyStatus();
+    }
+    setTimeout(() => { keyMsg.textContent = ""; }, 3000);
+  };
+}
 
 // ─── 1. Login ───────────────────────────────────────────────
 document.getElementById("login-btn").onclick = async () => {
@@ -51,6 +85,7 @@ document.getElementById("login-btn").onclick = async () => {
   if (hash !== ADMIN_HASH) return (loginMsg.textContent = "❌ Wrong password.");
   loginSection.classList.add("hidden");
   panelSection.classList.remove("hidden");
+  loadSavedKey();
   loadData();
 };
 
@@ -113,7 +148,7 @@ function renderMedia() {
       const vid = ytId(url) || url;
       mediaGrid.appendChild(
         createMediaCard(
-          `https://img.youtube.com/vi/${vid}/hqdefault.jpg`,
+          "https://img.youtube.com/vi/" + vid + "/hqdefault.jpg",
           "youtube",
           "🎬 YouTube",
           () => {
@@ -130,8 +165,8 @@ function createMediaCard(imgSrc, type, label, onDelete) {
   const div = document.createElement("div");
   div.className = "media-item";
   div.innerHTML = `
-    <img src="${imgSrc}" loading="lazy">
-    <span class="type-badge">${label}</span>
+    <img src="` + imgSrc + `" loading="lazy">
+    <span class="type-badge">` + label + `</span>
     <button class="delete-btn" title="Delete">✕</button>
   `;
   div.querySelector(".delete-btn").onclick = onDelete;
@@ -145,8 +180,14 @@ function ytId(url) {
   return m ? m[1] : url;
 }
 
-// ─── 4. Image Upload (Local Server) ───────────
+// ─── 4. Image Upload (ImgBB API) ───────────
 document.getElementById("image-upload").onchange = async (e) => {
+  if (!imgbbKey) {
+    uploadMsg.textContent = "❌ Please enter and save your ImgBB API key first (in Upload Settings).";
+    uploadMsg.style.color = "#f87171";
+    toggleSettings();
+    return;
+  }
   const files = e.target.files;
   if (!files || files.length === 0) return;
   
@@ -163,14 +204,14 @@ document.getElementById("image-upload").onchange = async (e) => {
   const total = files.length;
   let uploaded = 0;
   let failed = 0;
-  uploadMsg.textContent = `Uploading 0/${total}...`;
+  uploadMsg.textContent = "Uploading 0/" + total + "...";
   uploadMsg.style.color = "#60a5fa";
   
   for (const file of files) {
     try {
       const formData = new FormData();
       formData.append("image", file);
-      const res = await fetch(`/api/upload`, {
+      const res = await fetch("https://api.imgbb.com/1/upload?key=" + imgbbKey, {
         method: "POST",
         body: formData,
       });
@@ -181,29 +222,29 @@ document.getElementById("image-upload").onchange = async (e) => {
       } else {
         failed++;
         const errMsg = json.error ? json.error.message : JSON.stringify(json);
-        console.error("Upload error:", errMsg);
-        uploadMsg.textContent = `❌ Error: ${errMsg}`;
+        console.error("ImgBB upload error:", errMsg);
+        uploadMsg.textContent = "❌ Error: " + errMsg;
         uploadMsg.style.color = "#f87171";
       }
     } catch (err) {
       failed++;
-      console.error("Upload error:", err);
-      uploadMsg.textContent = `❌ Network error: ${err.message}`;
+      console.error("ImgBB upload error:", err);
+      uploadMsg.textContent = "❌ Network error: " + err.message;
       uploadMsg.style.color = "#f87171";
     }
     const pct = Math.round(((uploaded + failed) / total) * 100);
     progressFill.style.width = pct + "%";
     if (failed === 0)
-      uploadMsg.textContent = `Uploading ${uploaded + failed}/${total}...`;
+      uploadMsg.textContent = "Uploading " + (uploaded + failed) + "/" + total + "...";
   }
   
   uploadBox.classList.remove("uploading");
   progressFill.style.width = "100%";
   if (failed === 0) {
-    uploadMsg.textContent = `✅ ${uploaded} image${uploaded > 1 ? "s" : ""} uploaded! Don't forget to Save.`;
+    uploadMsg.textContent = "✅ " + uploaded + " image(s) uploaded! Don't forget to Save.";
     uploadMsg.style.color = "#4ade80";
   } else if (uploaded > 0) {
-    uploadMsg.textContent = `⚠️ ${uploaded} uploaded, ${failed} failed.`;
+    uploadMsg.textContent = "⚠️ " + uploaded + " uploaded, " + failed + " failed.";
     uploadMsg.style.color = "#fbbf24";
   }
   setTimeout(() => {
