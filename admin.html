@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin – DS Luxe</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <main class="container">
+    <h1>🛋️ DS Luxe Admin Panel</h1>
+
+    <!-- Login -->
+    <section id="login-section">
+      <label>Enter admin password:</label>
+      <input type="password" id="admin-pass" placeholder="Password" />
+      <button id="login-btn">Login</button>
+      <p id="login-msg" class="msg"></p>
+    </section>
+
+    <!-- Main Panel -->
+    <section id="panel-section" class="hidden">
+
+      <!-- Settings Banner -->
+      <div id="settings-banner" class="settings-banner">
+        <div class="settings-header" onclick="toggleSettings()">
+          ⚙️ <span>Upload Settings</span>
+          <span id="settings-arrow" class="arrow">▼</span>
+        </div>
+        <div id="settings-body" class="settings-body hidden">
+          <p class="settings-info">
+            Uploads are now saved directly to the local server storage. API Key is no longer required.
+          </p>
+          <div class="key-input-row" style="display:none;">
+            <input type="text" id="imgbb-key" />
+            <button id="save-key-btn" class="key-save-btn">Save Key</button>
+          </div>
+          <p id="key-msg" class="msg"></p>
+        </div>
+      </div>
+
+      <div class="panel-header">
+        <h2>Manage Gallery</h2>
+        <button id="save-btn" class="save-btn">💾 Save All Changes</button>
+      </div>
+      <p id="save-msg" class="msg"></p>
+
+      <div class="control-group">
+        <label>Select Service to Edit:</label>
+        <select id="service-select"></select>
+      </div>
+
+      <div class="edit-area">
+        <!-- Image Upload — Simple Gallery Pick -->
+        <div class="upload-box">
+          <h3>📷 Add Photo</h3>
+          <label for="image-upload" class="file-pick-label">
+            <span class="pick-icon">+</span>
+            <span>Choose from Gallery</span>
+          </label>
+          <input type="file" id="image-upload" accept="image/*" multiple style="display:none">
+          <div id="upload-progress" class="progress-bar hidden">
+            <div id="progress-fill" class="progress-fill"></div>
+          </div>
+          <p id="upload-msg" class="msg"></p>
+        </div>
+
+        <!-- YouTube Video -->
+        <div class="upload-box">
+          <h3>🎬 Add YouTube Video</h3>
+          <input type="text" id="yt-url" placeholder="Paste YouTube link...">
+          <button id="add-yt-btn" class="action-btn">Add Video</button>
+        </div>
+      </div>
+
+      <h3>Current Media</h3>
+      <div id="media-grid" class="media-grid"></div>
+    </section>
+  </main>
+  <script type="module" src="admin.js"></script>
+</body>
+</html>

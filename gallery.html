@@ -1,0 +1,669 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <title id="pgTitle">Gallery — DS Luxe Interiors</title>
+    <meta name="robots" content="noindex" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Manrope:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: oklch(12% 0.006 75);
+        --panel: oklch(16% 0.008 75);
+        --panel2: oklch(20% 0.009 75);
+        --text: oklch(95% 0.008 80);
+        --muted: oklch(67% 0.01 78);
+        --line: oklch(27% 0.012 78);
+        --gold: oklch(79% 0.105 80);
+        --gold2: oklch(70% 0.11 78);
+        --ease: cubic-bezier(0.16, 1, 0.3, 1);
+        --serif: "Cormorant Garamond", serif;
+        --sans: "Manrope", sans-serif;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font: 16px/1.65 var(--sans);
+        min-height: 100vh;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      img {
+        display: block;
+        width: 100%;
+        object-fit: cover;
+      }
+      /* Header */
+      .gh {
+        position: sticky;
+        top: 0;
+        z-index: 40;
+        background: oklch(12% 0.006 75/0.92);
+        backdrop-filter: blur(16px);
+        border-bottom: 1px solid var(--line);
+        padding: 0 clamp(20px, 4vw, 60px);
+        height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .mark {
+        width: 38px;
+        height: 38px;
+        border: 1px solid var(--gold);
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        color: var(--gold);
+        font: 16px var(--serif);
+      }
+      .brand strong {
+        font: 500 18px/1 var(--serif);
+      }
+      .brand small {
+        display: block;
+        margin-top: 2px;
+        color: var(--muted);
+        font-size: 7px;
+        letter-spacing: 0.28em;
+      }
+      .back {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 0 18px;
+        height: 38px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--muted);
+        transition: 0.3s var(--ease);
+      }
+      .back:hover {
+        border-color: var(--gold);
+        color: var(--gold);
+      }
+      .back svg {
+        width: 15px;
+        height: 15px;
+        fill: currentColor;
+      }
+      /* Hero */
+      .g-hero {
+        padding: 56px clamp(20px, 4vw, 60px) 36px;
+        border-bottom: 1px solid var(--line);
+      }
+      .eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: var(--gold);
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        margin-bottom: 14px;
+      }
+      .eyebrow:before {
+        content: "";
+        width: 30px;
+        height: 1px;
+        background: var(--gold);
+      }
+      .g-hero h1 {
+        font-family: var(--serif);
+        font-size: clamp(38px, 5.5vw, 70px);
+        font-weight: 400;
+        line-height: 1.03;
+        letter-spacing: -0.02em;
+      }
+      .g-hero h1 em {
+        color: var(--gold);
+        font-style: normal;
+      }
+      .g-count {
+        margin-top: 12px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+      /* Grid */
+      .g-grid {
+        padding: 46px clamp(20px, 4vw, 60px);
+        columns: 4 260px;
+        column-gap: 14px;
+      }
+      .g-card {
+        break-inside: avoid;
+        margin-bottom: 14px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        overflow: hidden;
+        background: var(--panel);
+        cursor: pointer;
+        transition: 0.4s var(--ease);
+        position: relative;
+      }
+      .g-card:hover {
+        border-color: oklch(79% 0.105 80/0.6);
+        transform: translateY(-4px);
+        box-shadow: 0 22px 55px oklch(0 0 0/0.55);
+      }
+      .g-thumb {
+        position: relative;
+        overflow: hidden;
+        background: var(--panel2);
+      }
+      .g-thumb img {
+        width: 100%;
+        height: auto;
+        display: block;
+        transition: 0.7s var(--ease);
+      }
+      .g-card:hover .g-thumb img {
+        transform: scale(1.05);
+      }
+      .play-overlay {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        background: oklch(7% 0.006 75/0.4);
+        transition: 0.3s;
+      }
+      .g-card:hover .play-overlay {
+        background: oklch(7% 0.006 75/0.25);
+      }
+      .play-btn {
+        width: 58px;
+        height: 58px;
+        border-radius: 50%;
+        background: var(--gold);
+        display: grid;
+        place-items: center;
+        box-shadow: 0 8px 28px oklch(0 0 0/0.55);
+        transition: 0.3s var(--ease);
+      }
+      .g-card:hover .play-btn {
+        transform: scale(1.12);
+      }
+      .play-btn svg {
+        width: 22px;
+        height: 22px;
+        fill: var(--bg);
+        margin-left: 3px;
+      }
+      .g-info {
+        padding: 13px 15px;
+      }
+      .g-info h3 {
+        font-family: var(--serif);
+        font-size: 19px;
+        font-weight: 400;
+        line-height: 1.2;
+        margin-bottom: 4px;
+      }
+      .g-info small {
+        font-size: 10px;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+      .g-badge {
+        position: absolute;
+        top: 9px;
+        left: 9px;
+        padding: 3px 9px;
+        border-radius: 999px;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        background: oklch(10% 0.006 75/0.88);
+        color: var(--gold);
+        border: 1px solid oklch(79% 0.105 80/0.5);
+        backdrop-filter: blur(8px);
+      }
+      /* Empty */
+      .g-empty {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 55vh;
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--muted);
+      }
+      .g-empty-icon {
+        font-size: 52px;
+        margin-bottom: 18px;
+        opacity: 0.45;
+      }
+      .g-empty h2 {
+        font-family: var(--serif);
+        font-size: 34px;
+        color: var(--text);
+        margin-bottom: 10px;
+      }
+      .g-empty p {
+        max-width: 36ch;
+        font-size: 14px;
+        line-height: 1.7;
+      }
+      /* Lightbox */
+      .lb {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        background: oklch(4% 0.004 75/0.96);
+        backdrop-filter: blur(22px);
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+      .lb.open {
+        display: flex;
+      }
+      .lb-img {
+        max-width: min(1100px, 100%);
+        max-height: 88vh;
+        object-fit: contain;
+        border-radius: 8px;
+        box-shadow: 0 40px 100px oklch(0 0 0/0.8);
+        display: block;
+      }
+      .lb-close,
+      .lb-nav {
+        position: fixed;
+        border: 1px solid var(--line);
+        border-radius: 50%;
+        background: oklch(16% 0.008 75/0.9);
+        color: var(--text);
+        width: 48px;
+        height: 48px;
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+        transition: 0.3s;
+        backdrop-filter: blur(8px);
+        font-size: 22px;
+        z-index: 101;
+      }
+      .lb-close {
+        top: 20px;
+        right: 20px;
+      }
+      .lb-nav.prev {
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+      .lb-nav.next {
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+      .lb-close:hover,
+      .lb-nav:hover {
+        border-color: var(--gold);
+        color: var(--gold);
+      }
+      .lb-cap {
+        position: fixed;
+        bottom: 22px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: oklch(16% 0.008 75/0.9);
+        border: 1px solid var(--line);
+        padding: 8px 18px;
+        border-radius: 999px;
+        font-size: 12px;
+        color: var(--muted);
+        backdrop-filter: blur(8px);
+        z-index: 101;
+        max-width: 90vw;
+        text-align: center;
+      }
+      /* Video Modal */
+      .vm {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        background: oklch(4% 0.004 75/0.96);
+        backdrop-filter: blur(22px);
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+      .vm.open {
+        display: flex;
+      }
+      .vm-box {
+        position: relative;
+        width: min(900px, 100%);
+        aspect-ratio: 16/9;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 40px 100px oklch(0 0 0/0.8);
+      }
+      .vm-box iframe,
+      .vm-box video {
+        width: 100%;
+        height: 100%;
+        border: 0;
+        display: block;
+      }
+      .vm-close {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        border: 1px solid var(--line);
+        border-radius: 50%;
+        background: oklch(16% 0.008 75/0.9);
+        color: var(--text);
+        width: 48px;
+        height: 48px;
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+        transition: 0.3s;
+        backdrop-filter: blur(8px);
+        font-size: 22px;
+        z-index: 101;
+      }
+      .vm-close:hover {
+        border-color: var(--gold);
+        color: var(--gold);
+      }
+      /* Footer */
+      .g-foot {
+        border-top: 1px solid var(--line);
+        padding: 26px clamp(20px, 4vw, 60px);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .g-foot a {
+        color: var(--gold);
+        transition: 0.2s;
+      }
+      .g-foot a:hover {
+        color: var(--gold2);
+      }
+      @media (max-width: 600px) {
+        .lb-nav {
+          display: none;
+        }
+        .g-grid {
+          padding: 30px 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="gh">
+      <a href="index.html" class="brand">
+        <span class="mark">DS</span>
+        <span><strong>DS Luxe</strong><small>INTERIORS</small></span>
+      </a>
+      <a href="index.html" class="back">
+        <svg viewBox="0 0 24 24">
+          <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20z" />
+        </svg>
+        Back
+      </a>
+    </header>
+
+    <div class="g-hero">
+      <div class="eyebrow">DS Luxe — Portfolio</div>
+      <h1 id="svcName">Loading…</h1>
+      <p class="g-count" id="itemCount"></p>
+    </div>
+
+    <div id="gGrid" class="g-grid"></div>
+    <div class="g-empty" id="gEmpty">
+      <div class="g-empty-icon">🖼️</div>
+      <h2>Gallery Coming Soon</h2>
+      <p>
+        Our team is curating beautiful images and videos for this service.
+        Please check back soon.
+      </p>
+    </div>
+
+    <footer class="g-foot">
+      <span>© 2026 DS Luxe Interiors. All rights reserved.</span>
+      <a href="index.html">← Return to main site</a>
+    </footer>
+
+    <!-- Lightbox -->
+    <div class="lb" id="lb">
+      <button class="lb-close" id="lbClose" aria-label="Close">✕</button>
+      <button class="lb-nav prev" id="lbPrev" aria-label="Previous">‹</button>
+      <img class="lb-img" id="lbImg" src="" alt="" />
+      <button class="lb-nav next" id="lbNext" aria-label="Next">›</button>
+      <div class="lb-cap" id="lbCap"></div>
+    </div>
+
+    <!-- Video / YouTube modal -->
+    <div class="vm" id="vm">
+      <button class="vm-close" id="vmClose" aria-label="Close">✕</button>
+      <div class="vm-box" id="vmBox"></div>
+    </div>
+
+    <script>
+      const SVCS = {
+        "modular-kitchen": "Modular Kitchen",
+        "luxury-wardrobes": "Luxury Wardrobes",
+        "living-room-interiors": "Living Room Interiors",
+        "bedroom-interiors": "Bedroom Interiors",
+        "tv-unit-design": "TV Unit Design",
+        "false-ceiling": "False Ceiling",
+        "office-interiors": "Office Interiors",
+        "bathroom-interiors": "Bathroom Interiors",
+        "dining-area": "Dining Area",
+        "study-room": "Study Room",
+        "space-planning": "Space Planning",
+        "3d-interior-design": "3D Interior Design",
+        "all-interior": "All Interior",
+      };
+      const slug = new URLSearchParams(location.search).get("s") || "";
+      const svcName = SVCS[slug] || "Gallery";
+
+      const words = svcName.trim().split(" ");
+      const last = words.pop();
+      document.getElementById("svcName").innerHTML =
+        (words.length ? words.join(" ") + " " : "") + `<em>${last}</em>`;
+      document.getElementById("pgTitle").textContent =
+        `${svcName} Gallery — DS Luxe Interiors`;
+
+      const grid = document.getElementById("gGrid");
+      const empty = document.getElementById("gEmpty");
+      const countEl = document.getElementById("itemCount");
+
+      let imgs = [];
+      let lbI = 0;
+
+      async function init() {
+        try {
+          const res = await fetch(`/api/gallery`);
+          if (!res.ok) throw new Error("fetch failed");
+          const json = await res.json();
+          const data = json.record || [];
+          const svcData = data.find((d) => d.slug === slug);
+
+          const items = [];
+          if (svcData) {
+            if (svcData.images)
+              svcData.images.forEach((url) => {
+                if (url.trim()) items.push({ type: "image", url });
+              });
+            if (svcData.videos)
+              svcData.videos.forEach((url) => {
+                if (url.trim()) items.push({ type: "video", url });
+              });
+            if (svcData.youtube)
+              svcData.youtube.forEach((vid) => {
+                if (vid.trim())
+                  items.push({ type: "youtube", url: vid, videoId: ytId(vid) });
+              });
+          }
+
+          if (!items.length) {
+            grid.style.display = "none";
+            empty.style.display = "flex";
+          } else {
+            countEl.textContent = `${items.length} item${items.length !== 1 ? "s" : ""} in collection`;
+            items.forEach((item, i) => {
+              const card = document.createElement("div");
+              card.className = "g-card";
+              if (item.type === "image") {
+                card.innerHTML = `<div class="g-thumb"><img src="${item.url}" alt="Gallery image" loading="lazy"></div><span class="g-badge">Photo</span>`;
+                card.onclick = () => openLb(i, items);
+              } else if (item.type === "youtube") {
+                const vid = item.videoId || ytId(item.url || "");
+                card.innerHTML = `<div class="g-thumb"><img src="https://img.youtube.com/vi/${vid}/hqdefault.jpg" alt="Video" loading="lazy"><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div><span class="g-badge">▶ YouTube</span>`;
+                card.onclick = () => openVm("yt", vid);
+              } else if (item.type === "video") {
+                card.innerHTML = `<div class="g-thumb" style="min-height:180px;display:grid;place-items:center;background:var(--panel2)"><div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div><span class="g-badge">▶ Video</span>`;
+                card.onclick = () => openVm("vid", item.url);
+              }
+              grid.appendChild(card);
+            });
+            imgs = items.filter((x) => x.type === "image");
+          }
+        } catch (e) {
+          grid.style.display = "none";
+          empty.style.display = "flex";
+          empty.querySelector("p").textContent = "Error loading gallery data.";
+        }
+      }
+
+      init();
+
+      function openLb(idx, items) {
+        lbI = imgs.indexOf(items[idx]);
+        if (lbI < 0) lbI = 0;
+        showLb();
+        document.getElementById("lb").classList.add("open");
+        document.body.style.overflow = "hidden";
+      }
+      function showLb() {
+        const it = imgs[lbI];
+        document.getElementById("lbImg").src = it.url;
+        document.getElementById("lbCap").textContent =
+          "Image " + (lbI + 1) + " of " + imgs.length;
+        document.getElementById("lbPrev").style.display =
+          lbI > 0 ? "grid" : "none";
+        document.getElementById("lbNext").style.display =
+          lbI < imgs.length - 1 ? "grid" : "none";
+      }
+      function closeLb() {
+        document.getElementById("lb").classList.remove("open");
+        document.body.style.overflow = "";
+      }
+      document.getElementById("lbClose").onclick = closeLb;
+      document.getElementById("lbPrev").onclick = () => {
+        if (lbI > 0) {
+          lbI--;
+          showLb();
+        }
+      };
+      document.getElementById("lbNext").onclick = () => {
+        if (lbI < imgs.length - 1) {
+          lbI++;
+          showLb();
+        }
+      };
+      document.getElementById("lb").onclick = (e) => {
+        if (e.target === e.currentTarget) closeLb();
+      };
+
+      function openVm(type, src) {
+        const box = document.getElementById("vmBox");
+        box.innerHTML =
+          type === "yt"
+            ? `<iframe src="https://www.youtube.com/embed/${src}?autoplay=1" allow="autoplay;encrypted-media" allowfullscreen></iframe>`
+            : `<video controls autoplay src="${src}" style="background:#000"></video>`;
+        document.getElementById("vm").classList.add("open");
+        document.body.style.overflow = "hidden";
+      }
+      function closeVm() {
+        document.getElementById("vmBox").innerHTML = "";
+        document.getElementById("vm").classList.remove("open");
+        document.body.style.overflow = "";
+      }
+      document.getElementById("vmClose").onclick = closeVm;
+      document.getElementById("vm").onclick = (e) => {
+        if (e.target === e.currentTarget) closeVm();
+      };
+
+      function ytId(url) {
+        const m = url.match(
+          /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([^&\n?#]+)/,
+        );
+        return m ? m[1] : url;
+      }
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          closeLb();
+          closeVm();
+        }
+        if (document.getElementById("lb").classList.contains("open")) {
+          if (e.key === "ArrowLeft" && lbI > 0) {
+            lbI--;
+            showLb();
+          }
+          if (e.key === "ArrowRight" && lbI < imgs.length - 1) {
+            lbI++;
+            showLb();
+          }
+        }
+      });
+      let brandClicks = 0,
+        brandTimer;
+      document.querySelectorAll(".brand").forEach((el) =>
+        el.addEventListener("click", (e) => {
+          brandClicks++;
+          clearTimeout(brandTimer);
+          if (brandClicks === 4) {
+            brandClicks = 0;
+            e.preventDefault();
+            location.href = "admin.html";
+          } else {
+            brandTimer = setTimeout(() => {
+              brandClicks = 0;
+            }, 1500);
+          }
+        }),
+      );
+    </script>
+  </body>
+</html>

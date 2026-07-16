@@ -1,0 +1,371 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Inter", system-ui, sans-serif;
+  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+  color: #eee;
+  margin: 0;
+  padding: 1.5rem;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 900px;
+  margin: auto;
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.6rem;
+}
+h2,
+h3 {
+  margin-top: 0;
+}
+.hidden {
+  display: none !important;
+}
+.msg {
+  margin-top: 0.5rem;
+  font-weight: 500;
+  font-size: 0.9rem;
+  min-height: 1.2em;
+}
+
+input,
+select,
+button {
+  width: 100%;
+  padding: 0.8rem;
+  margin-top: 0.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+input,
+select {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+option {
+  color: #000;
+}
+
+button {
+  background: linear-gradient(135deg, #ff7e5f, #feb47b);
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-weight: 600;
+  border: none;
+}
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(255, 126, 95, 0.4);
+}
+button:active {
+  transform: translateY(0);
+}
+
+/* Settings Banner */
+.settings-banner {
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+
+.settings-header {
+  padding: 0.8rem 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  transition: background 0.2s;
+  user-select: none;
+}
+.settings-header:hover {
+  background: rgba(59, 130, 246, 0.15);
+}
+.settings-header .arrow {
+  margin-left: auto;
+  transition: transform 0.3s;
+  font-size: 0.8rem;
+}
+.settings-header .arrow.open {
+  transform: rotate(180deg);
+}
+
+.settings-body {
+  padding: 0 1rem 1rem;
+}
+.settings-info {
+  font-size: 0.9rem;
+  color: #aaa;
+  margin-bottom: 0.8rem;
+}
+.settings-steps {
+  font-size: 0.85rem;
+  color: #bbb;
+  padding-left: 1rem;
+  margin-bottom: 1rem;
+  list-style: none;
+}
+.settings-steps li {
+  margin-bottom: 0.4rem;
+}
+.settings-steps a {
+  color: #60a5fa;
+  text-decoration: none;
+  font-weight: 600;
+}
+.settings-steps a:hover {
+  text-decoration: underline;
+}
+
+.key-input-row {
+  display: flex;
+  gap: 8px;
+}
+.key-input-row input {
+  flex: 1;
+  margin-top: 0;
+}
+.key-save-btn {
+  width: auto !important;
+  padding: 0.6rem 1.2rem !important;
+  margin-top: 0 !important;
+  background: #28a745 !important;
+  white-space: nowrap;
+  font-size: 0.9rem;
+}
+.key-save-btn:hover {
+  background: #218838 !important;
+}
+
+/* Panel Header */
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.save-btn {
+  background: linear-gradient(135deg, #28a745, #20c997) !important;
+  width: auto !important;
+  padding: 0.6rem 1.2rem !important;
+}
+.save-btn:hover {
+  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4) !important;
+}
+
+.control-group {
+  margin-bottom: 1.5rem;
+}
+
+/* Edit Area Grid */
+.edit-area {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+@media (max-width: 600px) {
+  .edit-area {
+    grid-template-columns: 1fr;
+  }
+}
+
+.upload-box {
+  background: rgba(0, 0, 0, 0.25);
+  padding: 1.5rem;
+  border-radius: 10px;
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+  transition: border-color 0.3s;
+}
+.upload-box:hover {
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+/* File Pick Button — Big beautiful touch target */
+.file-pick-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 1.5rem 1rem;
+  margin-top: 0.8rem;
+  border: 2px dashed rgba(59, 130, 246, 0.5);
+  border-radius: 12px;
+  background: rgba(59, 130, 246, 0.08);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  color: #60a5fa;
+  font-weight: 600;
+  font-size: 1rem;
+  text-align: center;
+}
+.file-pick-label:hover {
+  border-color: #60a5fa;
+  background: rgba(59, 130, 246, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.2);
+}
+.file-pick-label:active {
+  transform: translateY(0);
+}
+.file-pick-label .pick-icon {
+  font-size: 2.5rem;
+  line-height: 1;
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(59, 130, 246, 0.15);
+}
+
+/* Progress Bar */
+.progress-bar {
+  margin-top: 0.8rem;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #60a5fa, #3b82f6);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.action-btn {
+  background: linear-gradient(135deg, #3b82f6, #6366f1) !important;
+}
+.action-btn:hover {
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4) !important;
+}
+
+/* Media Grid */
+.media-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.media-item {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s;
+}
+.media-item:hover {
+  transform: scale(1.03);
+}
+.media-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.media-item .type-badge {
+  position: absolute;
+  bottom: 6px;
+  left: 6px;
+  background: rgba(0, 0, 0, 0.75);
+  padding: 3px 8px;
+  font-size: 0.7rem;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.delete-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: rgba(220, 53, 69, 0.9) !important;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 28px !important;
+  height: 28px;
+  font-size: 14px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  padding: 0 !important;
+  margin: 0 !important;
+  transition: background 0.2s !important;
+}
+.delete-btn:hover {
+  background: #c82333 !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Key saved indicator */
+.key-status {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-left: 8px;
+}
+.key-status.saved {
+  background: rgba(40, 167, 69, 0.2);
+  color: #4ade80;
+}
+.key-status.missing {
+  background: rgba(220, 53, 69, 0.2);
+  color: #f87171;
+}
+
+/* Upload loading animation */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+.uploading .file-pick-label {
+  pointer-events: none;
+  opacity: 0.6;
+}
