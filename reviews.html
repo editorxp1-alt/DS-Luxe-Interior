@@ -7,7 +7,7 @@
       name="viewport"
       content="width=device-width,initial-scale=1,viewport-fit=cover"
     />
-    <title id="pgTitle">Gallery — DS Luxe Interiors</title>
+    <title id="pgTitle">Client Reviews — DS Luxe Interiors</title>
     <meta name="robots" content="noindex" />
     
     <link rel="preconnect" href="https://i.postimg.cc" />
@@ -155,11 +155,30 @@
         font-size: 13px;
       }
       /* Grid */
-      .g-grid {
+      .r-grid {
         padding: 46px clamp(20px, 4vw, 60px);
-        columns: 4 260px;
-        column-gap: 14px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 24px;
+        max-width: 1400px;
+        margin: 0 auto;
       }
+      .r-card {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 30px;
+        background: var(--panel);
+        transition: 0.4s var(--ease);
+      }
+      .r-card:hover {
+        border-color: var(--gold);
+        transform: translateY(-2px);
+      }
+      .r-stars { color: var(--gold); margin-bottom: 16px; font-size: 14px; letter-spacing: 2px;}
+      .r-text { font-family: 'Cormorant Garamond', serif; font-size: 24px; line-height: 1.3; margin-bottom: 24px; font-style: italic; color: var(--text); }
+      .r-author { font-weight: 600; font-size: 15px; color: var(--text); }
+      .r-loc { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
       @keyframes fadeUp {
         from { opacity: 0; transform: translateY(30px); }
         to { opacity: 1; transform: translateY(0); }
@@ -453,19 +472,16 @@
     </header>
 
     <div class="g-hero">
-      <div class="eyebrow">DS Luxe — Portfolio</div>
-      <h1 id="svcName">Loading…</h1>
-      <p class="g-count" id="itemCount"></p>
+      <div class="eyebrow">DS Luxe — Reviews</div>
+      <h1 id="svcName">Client Stories</h1>
+      <p class="g-count" id="itemCount">Loading reviews...</p>
     </div>
 
-    <div id="gGrid" class="g-grid"></div>
-    <div class="g-empty" id="gEmpty">
-      <div class="g-empty-icon">🖼️</div>
-      <h2>Gallery Coming Soon</h2>
-      <p>
-        Our team is curating beautiful images and videos for this service.
-        Please check back soon.
-      </p>
+    <div id="rGrid" class="r-grid"></div>
+    <div class="g-empty" id="gEmpty" style="display:none;">
+      <div class="g-empty-icon">💬</div>
+      <h2>No reviews yet</h2>
+      <p>Be the first to share your experience with DS Luxe.</p>
     </div>
 
     <footer class="g-foot">
@@ -473,215 +489,48 @@
       <a href="index.html">← Return to main site</a>
     </footer>
 
-    <!-- Lightbox -->
-    <div class="lb" id="lb">
-      <button class="lb-close" id="lbClose" aria-label="Close">✕</button>
-      <button class="lb-nav prev" id="lbPrev" aria-label="Previous">‹</button>
-      <img decoding="async" class="lb-img" id="lbImg" src="" alt="" />
-      <button class="lb-nav next" id="lbNext" aria-label="Next">›</button>
-      <div class="lb-cap" id="lbCap"></div>
-    </div>
-
-    <!-- Video / YouTube modal -->
-    <div class="vm" id="vm">
-      <button class="vm-close" id="vmClose" aria-label="Close">✕</button>
-      <div class="vm-box" id="vmBox"></div>
-    </div>
-
     <script>
-      const SVCS = {
-        "modular-kitchen": "Modular Kitchen",
-        "luxury-wardrobes": "Luxury Wardrobes",
-        "living-room-interiors": "Living Room Interiors",
-        "bedroom-interiors": "Bedroom Interiors",
-        "tv-unit-design": "TV Unit Design",
-        "false-ceiling": "False Ceiling",
-        "office-interiors": "Office Interiors",
-        "bathroom-interiors": "Bathroom Interiors",
-        "dining-area": "Dining Area",
-        "study-room": "Study Room",
-        "space-planning": "Space Planning",
-        "3d-interior-design": "3D Interior Design",
-        "all-interior": "All Interior",
-      };
-      const slug = new URLSearchParams(location.search).get("s") || "";
-      const svcName = SVCS[slug] || "Gallery";
-
-      const words = svcName.trim().split(" ");
-      const last = words.pop();
-      document.getElementById("svcName").innerHTML =
-        (words.length ? words.join(" ") + " " : "") + `<em>${last}</em>`;
-      document.getElementById("pgTitle").textContent =
-        `${svcName} Gallery — DS Luxe Interiors`;
-
-      const grid = document.getElementById("gGrid");
-      const empty = document.getElementById("gEmpty");
-      const countEl = document.getElementById("itemCount");
-
-      let imgs = [];
-      let lbI = 0;
-
-      const JSONBIN_ID = '6a5772b4da38895dfe60ab40';
-      const JSONBIN_KEY = '$2a$10$dySlyKWtDmqIrrOcquURWeinFotbSXwgwZHeC6Bqu9RHcaE5T5KWu';
-      const GET_URL = "https://api.jsonbin.io/v3/b/" + JSONBIN_ID;
-
-      async function init() {
+      async function loadReviews() {
+        const grid = document.getElementById('rGrid');
+        const empty = document.getElementById('gEmpty');
+        const count = document.getElementById('itemCount');
+        
         try {
-          const res = await fetch(GET_URL, {
-            headers: { 'X-Master-Key': JSONBIN_KEY }
+          const res = await fetch('/api/reviews');
+          if (!res.ok) throw new Error('Failed to fetch');
+          const data = await res.json();
+          const reviews = data.record || [];
+          
+          if (reviews.length === 0) {
+            empty.style.display = 'flex';
+            count.textContent = '0 reviews';
+            return;
+          }
+          
+          count.textContent = `${reviews.length} ${reviews.length === 1 ? 'review' : 'reviews'}`;
+          
+          let html = '';
+          reviews.forEach((r, i) => {
+            const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+            html += `
+              <article class="r-card reveal" style="animation: fadeUp 0.8s var(--ease) ${i * 0.1}s forwards; opacity: 0;">
+                <div class="r-stars">${stars}</div>
+                <div class="r-text">"${r.review}"</div>
+                <div class="r-author">${r.name}</div>
+                <div class="r-loc">${r.location}</div>
+              </article>
+            `;
           });
-          if (!res.ok) throw new Error("fetch failed");
-          const json = await res.json();
-          const data = json.record || [];
-          const svcData = data.find((d) => d.slug === slug);
-
-          const items = [];
-          if (svcData) {
-            if (svcData.images)
-              svcData.images.forEach((url) => {
-                if (url.trim()) items.push({ type: "image", url });
-              });
-            if (svcData.videos)
-              svcData.videos.forEach((url) => {
-                if (url.trim()) items.push({ type: "video", url });
-              });
-            if (svcData.youtube)
-              svcData.youtube.forEach((vid) => {
-                if (vid.trim())
-                  items.push({ type: "youtube", url: vid, videoId: ytId(vid) });
-              });
-          }
-
-          if (!items.length) {
-            grid.style.display = "none";
-            empty.style.display = "flex";
-          } else {
-            countEl.textContent = `${items.length} item${items.length !== 1 ? "s" : ""} in collection`;
-            items.forEach((item, i) => {
-              const card = document.createElement("div");
-              card.className = "g-card";
-              card.style.animationDelay = `${i * 0.05}s`;
-              if (item.type === "image") {
-                card.innerHTML = `<div class="g-thumb"><img decoding="async" src="${item.url}" alt="Gallery image" loading="lazy"></div><span class="g-badge">Photo</span>`;
-                card.onclick = () => openLb(i, items);
-              } else if (item.type === "youtube") {
-                const vid = item.videoId || ytId(item.url || "");
-                card.innerHTML = `<div class="g-thumb"><img decoding="async" src="https://img.youtube.com/vi/${vid}/hqdefault.jpg" alt="Video" loading="lazy"><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div><span class="g-badge">▶ YouTube</span>`;
-                card.onclick = () => openVm("yt", vid);
-              } else if (item.type === "video") {
-                card.innerHTML = `<div class="g-thumb" style="min-height:180px;display:grid;place-items:center;background:var(--panel2)"><div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div><span class="g-badge">▶ Video</span>`;
-                card.onclick = () => openVm("vid", item.url);
-              }
-              grid.appendChild(card);
-            });
-            imgs = items.filter((x) => x.type === "image");
-          }
-        } catch (e) {
-          grid.style.display = "none";
-          empty.style.display = "flex";
-          empty.querySelector("p").textContent = "Error loading gallery data.";
+          grid.innerHTML = html;
+        } catch (err) {
+          console.error(err);
+          empty.style.display = 'flex';
+          empty.querySelector('h2').textContent = 'Error';
+          empty.querySelector('p').textContent = 'Could not load reviews at this time.';
+          count.textContent = '';
         }
       }
-
-      init();
-
-      function openLb(idx, items) {
-        lbI = imgs.indexOf(items[idx]);
-        if (lbI < 0) lbI = 0;
-        showLb();
-        document.getElementById("lb").classList.add("open");
-        document.body.style.overflow = "hidden";
-      }
-      function showLb() {
-        const it = imgs[lbI];
-        document.getElementById("lbImg").src = it.url;
-        document.getElementById("lbCap").textContent =
-          "Image " + (lbI + 1) + " of " + imgs.length;
-        document.getElementById("lbPrev").style.display =
-          lbI > 0 ? "grid" : "none";
-        document.getElementById("lbNext").style.display =
-          lbI < imgs.length - 1 ? "grid" : "none";
-      }
-      function closeLb() {
-        document.getElementById("lb").classList.remove("open");
-        document.body.style.overflow = "";
-      }
-      document.getElementById("lbClose").onclick = closeLb;
-      document.getElementById("lbPrev").onclick = () => {
-        if (lbI > 0) {
-          lbI--;
-          showLb();
-        }
-      };
-      document.getElementById("lbNext").onclick = () => {
-        if (lbI < imgs.length - 1) {
-          lbI++;
-          showLb();
-        }
-      };
-      document.getElementById("lb").onclick = (e) => {
-        if (e.target === e.currentTarget) closeLb();
-      };
-
-      function openVm(type, src) {
-        const box = document.getElementById("vmBox");
-        box.innerHTML =
-          type === "yt"
-            ? `<iframe src="https://www.youtube.com/embed/${src}?autoplay=1" allow="autoplay;encrypted-media" allowfullscreen></iframe>`
-            : `<video controls autoplay src="${src}" style="background:#000"></video>`;
-        document.getElementById("vm").classList.add("open");
-        document.body.style.overflow = "hidden";
-      }
-      function closeVm() {
-        document.getElementById("vmBox").innerHTML = "";
-        document.getElementById("vm").classList.remove("open");
-        document.body.style.overflow = "";
-      }
-      document.getElementById("vmClose").onclick = closeVm;
-      document.getElementById("vm").onclick = (e) => {
-        if (e.target === e.currentTarget) closeVm();
-      };
-
-      function ytId(url) {
-        const m = url.match(
-          /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([^&\n?#]+)/,
-        );
-        return m ? m[1] : url;
-      }
-
-      document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") {
-          closeLb();
-          closeVm();
-        }
-        if (document.getElementById("lb").classList.contains("open")) {
-          if (e.key === "ArrowLeft" && lbI > 0) {
-            lbI--;
-            showLb();
-          }
-          if (e.key === "ArrowRight" && lbI < imgs.length - 1) {
-            lbI++;
-            showLb();
-          }
-        }
-      });
-      let brandClicks = 0,
-        brandTimer;
-      document.querySelectorAll(".brand").forEach((el) =>
-        el.addEventListener("click", (e) => {
-          brandClicks++;
-          clearTimeout(brandTimer);
-          if (brandClicks === 4) {
-            brandClicks = 0;
-            e.preventDefault();
-            location.href = "admin.html";
-          } else {
-            brandTimer = setTimeout(() => {
-              brandClicks = 0;
-            }, 1500);
-          }
-        }),
-      );
+      loadReviews();
     </script>
   </body>
 </html>

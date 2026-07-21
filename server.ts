@@ -78,6 +78,29 @@ const storage = multer.diskStorage({
 })
 const upload = multer({ storage: storage })
 
+
+let reviewsData = [];
+const reviewsPath = path.resolve('./reviews.json');
+if (fs.existsSync(reviewsPath)) {
+  try {
+    reviewsData = JSON.parse(fs.readFileSync(reviewsPath, 'utf-8'));
+  } catch (e) {
+    console.error("Failed to parse local reviews data");
+  }
+}
+
+app.get('/api/reviews', (req, res) => {
+  res.json({ record: reviewsData });
+});
+
+app.post('/api/reviews', (req, res) => {
+  const newReview = req.body;
+  newReview.timestamp = Date.now();
+  reviewsData.unshift(newReview);
+  fs.writeFileSync(reviewsPath, JSON.stringify(reviewsData, null, 2));
+  res.json({ success: true });
+});
+
 app.get('/api/gallery', (req, res) => {
   res.json({ record: galleryData });
 });

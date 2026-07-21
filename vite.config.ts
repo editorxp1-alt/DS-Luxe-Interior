@@ -16,7 +16,8 @@ export default defineConfig(() => {
         input: {
           main: path.resolve(__dirname, 'index.html'),
           admin: path.resolve(__dirname, 'admin.html'),
-          gallery: path.resolve(__dirname, 'gallery.html')
+          gallery: path.resolve(__dirname, 'gallery.html'),
+          reviews: path.resolve(__dirname, 'reviews.html')
         }
       }
     },

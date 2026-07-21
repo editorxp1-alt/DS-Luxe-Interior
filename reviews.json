@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Ananya Mehta",
+    "location": "Full home, Gurugram",
+    "rating": 5,
+    "review": "The final home looks exactly like the approved render. Every material and detail feels intentional."
+  },
+  {
+    "name": "Rohit Khanna",
+    "location": "Modular kitchen, Noida",
+    "rating": 5,
+    "review": "Our kitchen is beautiful, but more importantly it works brilliantly every single day."
+  },
+  {
+    "name": "Vikram Rao",
+    "location": "Office interior, Gurugram",
+    "rating": 5,
+    "review": "Clear updates, clean execution and no last-minute surprises."
+  }
+]

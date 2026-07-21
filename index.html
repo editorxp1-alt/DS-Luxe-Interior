@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <meta name="referrer" content="no-referrer" />
     <meta
       name="viewport"
       content="width=device-width,initial-scale=1,viewport-fit=cover"
@@ -11,6 +12,11 @@
       name="description"
       content="Luxury residential and commercial interiors across Delhi NCR by DS Luxe Interiors."
     />
+    <link rel="preload" as="image" href="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=2000&q=88" />
+    
+    <link rel="preconnect" href="https://i.postimg.cc" />
+    <link rel="preconnect" href="https://api.jsonbin.io" />
+    
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -949,7 +955,7 @@
       <section class="intro" id="about">
         <div class="wrap intro-grid">
           <div class="portrait reveal">
-            <img
+            <img decoding="async" loading="lazy"
               src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1000&q=86"
               alt="Warm luxury living room"
               style="transform: scale(1.15); transform-origin: top center;"
@@ -1060,7 +1066,7 @@
           </div>
           <div class="projects reveal">
             <article class="project">
-              <img
+              <img decoding="async" loading="lazy"
                 src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1300&q=86"
                 alt="Contemporary luxury living room"
               />
@@ -1071,7 +1077,7 @@
             </article>
             <div class="project-stack">
               <article class="project small">
-                <img
+                <img decoding="async" loading="lazy"
                   src="https://images.unsplash.com/photo-1556909212-d5b604d0c90d?auto=format&fit=crop&w=1000&q=86"
                   alt="Modern luxury kitchen"
                 />
@@ -1081,7 +1087,7 @@
                 </div>
               </article>
               <article class="project small">
-                <img
+                <img decoding="async" loading="lazy"
                   src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1000&q=86"
                   alt="Premium office interior"
                 />
@@ -1098,37 +1104,37 @@
         <div class="wrap">
           <div class="gallery reveal">
             <figure>
-              <img
+              <img decoding="async" loading="lazy"
                 src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=84"
                 alt="Luxury living interior"
               />
             </figure>
             <figure>
-              <img
+              <img decoding="async" loading="lazy"
                 src="https://images.unsplash.com/photo-1616137466211-f939a420be84?auto=format&fit=crop&w=900&q=84"
                 alt="Elegant bedroom"
               />
             </figure>
             <figure>
-              <img
+              <img decoding="async" loading="lazy"
                 src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=900&q=84"
                 alt="Modern bathroom"
               />
             </figure>
             <figure>
-              <img
+              <img decoding="async" loading="lazy"
                 src="https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=900&q=84"
                 alt="Kitchen"
               />
             </figure>
             <figure>
-              <img
+              <img decoding="async" loading="lazy"
                 src="https://images.unsplash.com/photo-1615529182904-14819c35db37?auto=format&fit=crop&w=900&q=84"
                 alt="Lounge"
               />
             </figure>
             <figure>
-              <img
+              <img decoding="async" loading="lazy"
                 src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=900&q=84"
                 alt="Dining area"
               />
@@ -1146,40 +1152,14 @@
               >
             </h2>
           </div>
-          <div class="testimonials reveal">
-            <article class="quote">
-              <div>
-                <div class="stars">★★★★★</div>
-                <blockquote>
-                  “The final home looks exactly like the approved render. Every
-                  material and detail feels intentional.”
-                </blockquote>
-              </div>
-              <div><b>Ananya Mehta</b><small>Full home, Gurugram</small></div>
-            </article>
-            <article class="quote">
-              <div>
-                <div class="stars">★★★★★</div>
-                <blockquote>
-                  “Our kitchen is beautiful, but more importantly it works
-                  brilliantly every single day.”
-                </blockquote>
-              </div>
-              <div>
-                <b>Rohit Khanna</b><small>Modular kitchen, Noida</small>
-              </div>
-            </article>
-            <article class="quote">
-              <div>
-                <div class="stars">★★★★★</div>
-                <blockquote>
-                  “Clear updates, clean execution and no last-minute surprises.”
-                </blockquote>
-              </div>
-              <div>
-                <b>Vikram Rao</b><small>Office interior, Gurugram</small>
-              </div>
-            </article>
+          <div style="margin-top:20px;text-align:center;margin-bottom:40px;">
+            <button class="btn" onclick="document.getElementById('reviewModal').showModal(); document.body.classList.add('lock');">Write a Review</button>
+          </div>
+          <div class="testimonials reveal" id="homeReviewsGrid">
+            <!-- Dynamically loaded reviews will go here -->
+          </div>
+          <div style="margin-top: 40px; text-align: center;" id="seeMoreReviewsBtn">
+            <a href="reviews.html" class="btn" style="background: transparent; border: 1px solid var(--line);">See all reviews</a>
           </div>
         </div>
       </section>
@@ -1324,10 +1304,21 @@
             <a href="#about">About</a><a href="#services">Services</a
             ><a href="#projects">Projects</a>
           </div>
-          <div class="footer-col">
+          <div class="footer-col" id="footer-services">
             <h4>Services</h4>
-            <a href="#services">Modular Kitchen</a
-            ><a href="#services">Wardrobes</a>
+            <a href="gallery.html?s=modular-kitchen">Modular Kitchen</a>
+            <a href="gallery.html?s=luxury-wardrobes">Wardrobes</a>
+            <a href="gallery.html?s=living-room-interiors">Living Room</a>
+            <a href="gallery.html?s=bedroom-interiors">Bedroom</a>
+            <a href="gallery.html?s=tv-unit-design">TV Unit Design</a>
+            <a href="gallery.html?s=false-ceiling">False Ceiling</a>
+            <a href="gallery.html?s=office-interiors">Office Interiors</a>
+            <a href="gallery.html?s=bathroom-interiors">Bathroom Interiors</a>
+            <a href="gallery.html?s=dining-area">Dining Area</a>
+            <a href="gallery.html?s=study-room">Study Room</a>
+            <a href="gallery.html?s=space-planning">Space Planning</a>
+            <a href="gallery.html?s=3d-interior-design">3D Interior Design</a>
+            <a href="gallery.html?s=all-interior">All Interior</a>
           </div>
           <div class="footer-col">
             <h4>Contact</h4>
@@ -1364,6 +1355,51 @@
           /></svg
       ></a>
     </div>
+    
+    <dialog id="reviewModal">
+      <div id="reviewFormWrap">
+        <div class="modal-head">
+          <button class="modal-close" onclick="document.getElementById('reviewModal').close(); document.body.classList.remove('lock');" aria-label="Close">
+            ×
+          </button>
+          <div class="eyebrow">Client Feedback</div>
+          <h2>Share your experience</h2>
+          <p>We'd love to hear about your journey with DS Luxe.</p>
+        </div>
+        <form class="modal-form" id="reviewForm">
+          <div class="form-grid">
+            <div class="field">
+              <label>Name</label><input name="Name" required />
+            </div>
+            <div class="field">
+              <label>Location / Project Type (e.g. Noida, Kitchen)</label><input name="Location" required />
+            </div>
+            <div class="field" style="grid-column: 1 / -1;">
+              <label>Rating</label>
+              <select name="Rating" required>
+                <option value="5">★★★★★ (5/5)</option>
+                <option value="4">★★★★☆ (4/5)</option>
+                <option value="3">★★★☆☆ (3/5)</option>
+                <option value="2">★★☆☆☆ (2/5)</option>
+                <option value="1">★☆☆☆☆ (1/5)</option>
+              </select>
+            </div>
+            <div class="field" style="grid-column: 1 / -1;">
+              <label>Your Review</label>
+              <textarea name="Review" required style="width:100%;height:100px;background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:12px;color:var(--text);font-family:inherit;"></textarea>
+            </div>
+          </div>
+          <button type="submit" class="btn" style="width: 100%; margin-top: 24px;">Submit Review</button>
+        </form>
+      </div>
+      <div id="reviewSuccess" style="display: none; text-align: center; padding: 40px 0;">
+        <div style="font-size: 48px; margin-bottom: 24px;">✨</div>
+        <h2>Thank You!</h2>
+        <p>Your review has been submitted successfully.</p>
+        <button class="btn" style="margin-top: 32px;" onclick="document.getElementById('reviewModal').close(); document.body.classList.remove('lock');">Close</button>
+      </div>
+    </dialog>
+
     <dialog id="consultationModal">
       <div id="modalFormWrap">
         <div class="modal-head">
@@ -1387,6 +1423,9 @@
             </div>
             <div class="field">
               <label>Location</label><input name="Location" />
+            </div>
+            <div class="field">
+              <label>Reference Images (Max 2MB)</label><input type="file" name="Reference_Images" accept="image/*" multiple />
             </div>
             <div class="field">
               <label>Property</label
@@ -1526,6 +1565,20 @@
         d.append("access_key", "7c681d79-a9b4-46c6-8a9e-6c91bc5537e1");
         d.append("subject", "New Inquiry - DS Luxe");
         fetch("https://api.web3forms.com/submit", { method: "POST", body: d });
+        // Also save to our local backend
+        const reviewData = {
+          name: d.get('Name'),
+          location: d.get('Location'),
+          rating: parseInt(d.get('Rating')),
+          review: d.get('Review')
+        };
+        fetch('/api/reviews', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(reviewData)
+        }).then(() => {
+          loadHomeReviews(); // reload reviews
+        });
         formFields.style.display = "none";
         success.style.display = "block";
       };
@@ -1539,6 +1592,33 @@
       modalClose.onclick = () => consultationModal.close();
       successClose.onclick = () => consultationModal.close();
       consultationModal.onclose = () => document.body.classList.remove("lock");
+      
+      document.getElementById('reviewForm').onsubmit = (e) => {
+        e.preventDefault();
+        const f = e.target;
+        if (!f.checkValidity()) return f.reportValidity();
+        const d = new FormData(f);
+        d.append("access_key", "7c681d79-a9b4-46c6-8a9e-6c91bc5537e1");
+        d.append("subject", "New Client Review Submitted - DS Luxe");
+        fetch("https://api.web3forms.com/submit", { method: "POST", body: d });
+        // Also save to our local backend
+        const reviewData = {
+          name: d.get('Name'),
+          location: d.get('Location'),
+          rating: parseInt(d.get('Rating')),
+          review: d.get('Review')
+        };
+        fetch('/api/reviews', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(reviewData)
+        }).then(() => {
+          loadHomeReviews(); // reload reviews
+        });
+        document.getElementById('reviewFormWrap').style.display = "none";
+        document.getElementById('reviewSuccess').style.display = "block";
+      };
+
       consultationForm.onsubmit = (e) => {
         e.preventDefault();
         if (!consultationForm.checkValidity())
@@ -1547,6 +1627,20 @@
         d.append("access_key", "7c681d79-a9b4-46c6-8a9e-6c91bc5537e1");
         d.append("subject", "New Consultation Booking - DS Luxe");
         fetch("https://api.web3forms.com/submit", { method: "POST", body: d });
+        // Also save to our local backend
+        const reviewData = {
+          name: d.get('Name'),
+          location: d.get('Location'),
+          rating: parseInt(d.get('Rating')),
+          review: d.get('Review')
+        };
+        fetch('/api/reviews', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(reviewData)
+        }).then(() => {
+          loadHomeReviews(); // reload reviews
+        });
         modalFormWrap.style.display = "none";
         modalSuccess.style.display = "block";
       };
@@ -1567,6 +1661,43 @@
           }
         }),
       );
-    </script>
+    
+      async function loadHomeReviews() {
+        const grid = document.getElementById('homeReviewsGrid');
+        if(!grid) return;
+        try {
+          const res = await fetch('/api/reviews');
+          if (!res.ok) throw new Error('Failed');
+          const data = await res.json();
+          const reviews = data.record || [];
+          
+          if(reviews.length > 0) {
+            let html = '';
+            // Show only first 3 reviews
+            reviews.slice(0, 3).forEach(r => {
+              const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+              html += `
+                <article class="quote">
+                  <div>
+                    <div class="stars">${stars}</div>
+                    <blockquote>"${r.review}"</blockquote>
+                  </div>
+                  <div><b>${r.name}</b><small>${r.location}</small></div>
+                </article>
+              `;
+            });
+            grid.innerHTML = html;
+          }
+          
+          if(reviews.length <= 3) {
+            const btn = document.getElementById('seeMoreReviewsBtn');
+            if(btn) btn.style.display = 'none';
+          }
+        } catch(e) {
+          console.error(e);
+        }
+      }
+      loadHomeReviews();
+</script>
   </body>
 </html>
