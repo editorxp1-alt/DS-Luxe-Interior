@@ -206,16 +206,34 @@
         display: grid;
         align-items: end;
         padding: 150px 0 80px;
-        background-image:
-          linear-gradient(
-            90deg,
-            oklch(8% 0.006 75/0.94),
-            oklch(8% 0.006 75/0.72) 48%,
-            oklch(8% 0.006 75/0.2)
-          ),
-          url("https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=2000&q=88");
-        background-size: cover;
-        background-position: center;
+        background-color: oklch(8% 0.006 75);
+        overflow: hidden;
+      }
+      .hero-bg-video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: 0;
+        pointer-events: none;
+      }
+      .hero-bg-video iframe {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 100vw;
+        height: 177.77vw;
+        min-height: 100vh;
+        min-width: 56.25vh;
+        transform: translate(-50%, -50%);
+        opacity: 0.45;
+        border: none;
+      }
+      .hero .wrap {
+        position: relative;
+        z-index: 1;
       }
       .hero:after {
         content: "";
@@ -274,9 +292,19 @@
         align-items: center;
       }
       .portrait {
-        height: 650px;
+        aspect-ratio: 16 / 9;
+        height: auto;
         position: relative;
         overflow: hidden;
+      }
+      .vid-wrap {
+        position: absolute; inset: 0; overflow: hidden; pointer-events: none;
+      }
+      .vid-wrap video {
+        position: absolute; top: 0; left: 0;
+        width: 100%; height: 100%;
+        object-fit: cover;
+        border: none;
       }
       .portrait:after,
       .project:after {
@@ -414,10 +442,12 @@
       .project {
         position: relative;
         overflow: hidden;
-        min-height: 620px;
+        aspect-ratio: 16 / 9;
+        height: auto;
       }
       .project.small {
-        min-height: 301px;
+        aspect-ratio: 16 / 9;
+        height: auto;
       }
       .project-stack {
         display: grid;
@@ -925,6 +955,10 @@
     </div>
     <main>
       <section class="hero" id="home">
+        <div class="hero-bg-video">
+          <video src="https://res.cloudinary.com/r465og1s/video/upload/v1784640567/vidssave.com_Image_to_Video_in_minutes_with_Kling_AI___3D_Interior_animation_with_AI_3dinterior_interiordesign_1080P_ryof84.mp4" autoplay loop muted playsinline style="width:100%; height:100%; object-fit:cover;"></video>
+        </div>
+        <div class="hero-gradient" style="position:absolute; inset:0; z-index:0; background: linear-gradient(90deg, oklch(8% 0.006 75/0.94), oklch(8% 0.006 75/0.72) 48%, oklch(8% 0.006 75/0.2)); pointer-events: none;"></div>
         <div class="wrap">
           <div class="hero-copy reveal">
             <div class="eyebrow">Luxury interiors, Delhi NCR</div>
@@ -955,11 +989,9 @@
       <section class="intro" id="about">
         <div class="wrap intro-grid">
           <div class="portrait reveal">
-            <img decoding="async" loading="lazy"
-              src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1000&q=86"
-              alt="Warm luxury living room"
-              style="transform: scale(1.15); transform-origin: top center;"
-            />
+            <div class="vid-wrap">
+              <video src="https://res.cloudinary.com/r465og1s/video/upload/v1784641980/4_BHK__FLAT__LUXURY_LIVING_ROOM_INTERIOR_DESIGN_Thane-Mumbai_kumarinteriorthane_interiordesigner_dsivdu.mp4" autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: cover;"></video>
+            </div>
           </div>
           <div class="reveal">
             <div class="eyebrow">The studio</div>
@@ -1066,31 +1098,42 @@
           </div>
           <div class="projects reveal">
             <article class="project">
-              <img decoding="async" loading="lazy"
-                src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1300&q=86"
-                alt="Contemporary luxury living room"
-              />
+              <div class="vid-wrap">
+                <video src="https://res.cloudinary.com/r465og1s/video/upload/v1784641916/YTDown.com_Shorts_Real-Estate-Video-Walkthrough-Speed-Ramp_Media_6cXawULEjlE_002_720p_pbruas.mp4" autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: cover;"></video>
+              </div>
               <div class="project-text">
-                <small>Full residence · Gurugram</small>
-                <h3>The Onyx Residence</h3>
+                <small>Full residence · </small>
+                <h3>The  Residence</h3>
               </div>
             </article>
             <div class="project-stack">
               <article class="project small">
-                <img decoding="async" loading="lazy"
-                  src="https://images.unsplash.com/photo-1556909212-d5b604d0c90d?auto=format&fit=crop&w=1000&q=86"
-                  alt="Modern luxury kitchen"
-                />
+               <div class="vid-wrap">
+            <video
+              src="https://res.cloudinary.com/r465og1s/video/upload/v1784644071/YTDown.com_Shorts_Luxury-Modular-Kitchen-in-Just-350000-Un_Media_VE_DH-WSR6w_002_720p_nu6tr0.mp4"
+              autoplay
+              loop
+              muted
+              playsinline
+              style="width: 100%; height: 100%; object-fit: cover"
+            ></video>
+          </div>
                 <div class="project-text">
                   <small>Modular kitchen · Noida</small>
                   <h3>Maison Blanc</h3>
                 </div>
               </article>
               <article class="project small">
-                <img decoding="async" loading="lazy"
-                  src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1000&q=86"
-                  alt="Premium office interior"
-                />
+                <div class="vid-wrap">
+            <video
+              src="https://res.cloudinary.com/r465og1s/video/upload/v1784645652/YTDown.com_Shorts_Office-interior-ideas-small-office-inter_Media_xTpGmyFTWDA_001_720p_lvqjla.mp4"
+              autoplay
+              loop
+              muted
+              playsinline
+              style="width: 100%; height: 100%; object-fit: cover"
+            ></video>
+          </div>
                 <div class="project-text">
                   <small>Office · Gurugram</small>
                   <h3>Studio Meridian</h3>
@@ -1155,7 +1198,7 @@
           <div style="margin-top:20px;text-align:center;margin-bottom:40px;">
             <button class="btn" onclick="document.getElementById('reviewModal').showModal(); document.body.classList.add('lock');">Write a Review</button>
           </div>
-          <div class="testimonials reveal" id="homeReviewsGrid">
+          <div class="testimonials" id="homeReviewsGrid">
             <!-- Dynamically loaded reviews will go here -->
           </div>
           <div style="margin-top: 40px; text-align: center;" id="seeMoreReviewsBtn">
@@ -1528,7 +1571,7 @@
       );
       document.querySelectorAll(".reveal").forEach((e) => io.observe(e));
       const heroSection = document.getElementById("home");
-      const portraitImg = document.querySelector(".portrait img");
+      const portraitImg = document.querySelector(".portrait video") || document.querySelector(".portrait img");
       addEventListener(
         "scroll",
         () => {
@@ -1565,20 +1608,6 @@
         d.append("access_key", "7c681d79-a9b4-46c6-8a9e-6c91bc5537e1");
         d.append("subject", "New Inquiry - DS Luxe");
         fetch("https://api.web3forms.com/submit", { method: "POST", body: d });
-        // Also save to our local backend
-        const reviewData = {
-          name: d.get('Name'),
-          location: d.get('Location'),
-          rating: parseInt(d.get('Rating')),
-          review: d.get('Review')
-        };
-        fetch('/api/reviews', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(reviewData)
-        }).then(() => {
-          loadHomeReviews(); // reload reviews
-        });
         formFields.style.display = "none";
         success.style.display = "block";
       };
@@ -1619,28 +1648,35 @@
         document.getElementById('reviewSuccess').style.display = "block";
       };
 
-      consultationForm.onsubmit = (e) => {
+      consultationForm.onsubmit = async (e) => {
         e.preventDefault();
         if (!consultationForm.checkValidity())
           return consultationForm.reportValidity();
         const d = new FormData(consultationForm);
         d.append("access_key", "7c681d79-a9b4-46c6-8a9e-6c91bc5537e1");
         d.append("subject", "New Consultation Booking - DS Luxe");
+        
+        // Handle images if any
+        const refImages = d.getAll('Reference_Images');
+        if (refImages && refImages.length > 0 && refImages[0].size > 0) {
+          // Send to local upload endpoint so it gets a URL, then include in web3forms
+          let urls = [];
+          for (let img of refImages) {
+            const fd = new FormData();
+            fd.append('image', img);
+            try {
+               const res = await fetch('/api/upload', {method: 'POST', body: fd});
+               const json = await res.json();
+               if(json.success && json.data.url) urls.push(window.location.origin + json.data.url);
+            } catch(err) {}
+          }
+          if (urls.length > 0) {
+            d.append('Reference_Links', urls.join(', '));
+            d.delete('Reference_Images'); // web3forms doesn't handle pure files as well without multipart
+          }
+        }
+        
         fetch("https://api.web3forms.com/submit", { method: "POST", body: d });
-        // Also save to our local backend
-        const reviewData = {
-          name: d.get('Name'),
-          location: d.get('Location'),
-          rating: parseInt(d.get('Rating')),
-          review: d.get('Review')
-        };
-        fetch('/api/reviews', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(reviewData)
-        }).then(() => {
-          loadHomeReviews(); // reload reviews
-        });
         modalFormWrap.style.display = "none";
         modalSuccess.style.display = "block";
       };
@@ -1666,7 +1702,7 @@
         const grid = document.getElementById('homeReviewsGrid');
         if(!grid) return;
         try {
-          const res = await fetch('/api/reviews');
+          const res = await fetch('/api/reviews', { cache: 'no-store' });
           if (!res.ok) throw new Error('Failed');
           const data = await res.json();
           const reviews = data.record || [];
