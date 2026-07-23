@@ -1,0 +1,41 @@
+{
+  "entities": {
+    "Review": {
+      "title": "Review",
+      "description": "A user review",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "location": { "type": "string" },
+        "rating": { "type": "number" },
+        "review": { "type": "string" },
+        "timestamp": { "type": "number" }
+      },
+      "required": ["name", "rating", "review"]
+    },
+    "GalleryCategory": {
+      "title": "GalleryCategory",
+      "description": "A gallery category containing images",
+      "type": "object",
+      "properties": {
+        "slug": { "type": "string" },
+        "title": { "type": "string" },
+        "images": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "required": ["slug", "title"]
+    }
+  },
+  "firestore": {
+    "reviews": {
+      "schema": { "$ref": "#/entities/Review" },
+      "description": "User reviews"
+    },
+    "gallery": {
+      "schema": { "$ref": "#/entities/GalleryCategory" },
+      "description": "Gallery categories"
+    }
+  }
+}

@@ -481,7 +481,7 @@
         grid-auto-rows: 260px;
         gap: 14px;
       }
-      .gallery figure {
+      .gallery figure { position: relative;
         overflow: hidden;
       }
       .gallery figure:nth-child(1) {
@@ -493,7 +493,7 @@
         grid-column: span 5;
       }
       .gallery figure:nth-child(n + 4) {
-        grid-column: span 4;
+        grid-column: span 6;
       }
       .gallery img {
         transition: 0.8s var(--ease);
@@ -886,7 +886,7 @@
           grid-template-columns: 1fr;
           grid-auto-rows: 300px;
         }
-        .gallery figure {
+        .gallery figure { position: relative;
           grid-column: auto !important;
           grid-row: auto !important;
         }
@@ -1142,40 +1142,29 @@
         <div class="wrap">
           <div class="gallery reveal">
             <figure>
-              <img decoding="async" loading="lazy"
-                src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=84"
-                alt="Luxury living interior"
-              />
+              <div class="vid-wrap">
+                <video src="https://res.cloudinary.com/r465og1s/video/upload/v1784648102/YTDown.com_Shorts_3bhk-flat-interior-design-interior-homed_Media_H3_MfiaBvq4_002_720p_ttpohv.mp4" autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: cover"></video>
+              </div>
             </figure>
             <figure>
-              <img decoding="async" loading="lazy"
-                src="https://images.unsplash.com/photo-1616137466211-f939a420be84?auto=format&fit=crop&w=900&q=84"
-                alt="Elegant bedroom"
-              />
+              <div class="vid-wrap">
+                <video src="https://res.cloudinary.com/r465og1s/video/upload/v1784647453/YTDown.com_Shorts_Master-Bedroom-Design-12-16-Bedroom-Desi_Media_Zzw4l_Dt5p4_002_720p_aqzsuk.mp4" autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: cover"></video>
+              </div>
             </figure>
             <figure>
-              <img decoding="async" loading="lazy"
-                src="https://res.cloudinary.com/r465og1s/image/upload/v1784655881/modern-bedroom-design-with-a-king-size-bed-and-textured-wall-panelling-img_sctu6f.jpg"
-                alt="Modern bathroom"
-              />
+              <div class="vid-wrap">
+                <video src="https://res.cloudinary.com/r465og1s/video/upload/v1784648219/YTDown.com_Shorts_Maximize-Every-Corner-of-Your-Kitchen-Sm_Media_nHECOFUO4G8_002_720p_gzpzst.mp4" autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: cover"></video>
+              </div>
             </figure>
             <figure>
-              <img decoding="async" loading="lazy"
-                src="https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=900&q=84"
-                alt="Kitchen"
-              />
+              <div class="vid-wrap">
+                <video src="https://res.cloudinary.com/r465og1s/video/upload/v1784648364/YTDown.com_Shorts_latest-pooja-mandir-designs-for-home-poo_Media_f0A-VL6-HsU_001_720p_zxadez.mp4" autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: cover"></video>
+              </div>
             </figure>
             <figure>
-              <img decoding="async" loading="lazy"
-                src="https://images.unsplash.com/photo-1615529182904-14819c35db37?auto=format&fit=crop&w=900&q=84"
-                alt="Lounge"
-              />
-            </figure>
-            <figure>
-              <img decoding="async" loading="lazy"
-                src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=900&q=84"
-                alt="Dining area"
-              />
+              <div class="vid-wrap">
+                <video src="https://res.cloudinary.com/r465og1s/video/upload/v1784647327/YTDown.com_Shorts_3Bhk-House-Interior-Design-Latest-Design_Media_PcipepLx8Ts_001_720p_fndopp.mp4" autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: cover"></video>
+              </div>
             </figure>
           </div>
         </div>

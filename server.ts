@@ -3,61 +3,54 @@ import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
 import { createServer as createViteServer } from 'vite';
+import { initializeApp } from 'firebase/app';
+import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
 
 const app = express();
 const PORT = 3000;
 
 app.use(express.json());
 
-// In-memory data store for the gallery (replacing JSONBin)
-let galleryData = [
-  {
-    "slug": "kitchen",
-    "title": "Modular Kitchen",
-    "images": [
-      "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=1200&q=84",
-      "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=84",
-      "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1200&q=84",
-      "https://images.unsplash.com/photo-1588854337236-6889d631faa8?auto=format&fit=crop&w=1200&q=84"
-    ]
-  },
-  {
-    "slug": "wardrobe",
-    "title": "Luxury Wardrobes",
-    "images": [
-      "https://images.unsplash.com/photo-1595514535313-90d1f8876c1f?auto=format&fit=crop&w=1200&q=84",
-      "https://images.unsplash.com/photo-1558997519-83ea9252edf8?auto=format&fit=crop&w=1200&q=84"
-    ]
-  },
-  {
-    "slug": "living",
-    "title": "Living Room Interiors",
-    "images": [
-      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=84",
-      "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=84",
-      "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1200&q=84",
-      "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=84"
-    ]
-  },
-  {
-    "slug": "bedroom",
-    "title": "Bedroom Interiors",
-    "images": [
-      "https://images.unsplash.com/photo-1616137466211-f939a420be84?auto=format&fit=crop&w=1200&q=84",
-      "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&q=84",
-      "https://images.unsplash.com/photo-1505693314120-0d443867891c?auto=format&fit=crop&w=1200&q=84"
-    ]
-  }
-];
+// Initialize Firebase
+const firebaseConfig = JSON.parse(fs.readFileSync('./firebase-applet-config.json', 'utf-8'));
+const firebaseApp = initializeApp(firebaseConfig);
+const db = getFirestore(firebaseApp, firebaseConfig.firestoreDatabaseId);
 
-const dataPath = path.resolve('./gallery-data.json');
-if (fs.existsSync(dataPath)) {
+// In-memory data store for the gallery (replacing JSONBin)
+let galleryData: any[] = [];
+let reviewsData: any[] = [];
+
+async function syncData() {
   try {
-    galleryData = JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
-  } catch (e) {
-    console.error("Failed to parse local gallery data");
+    const gallerySnap = await getDoc(doc(db, 'data', 'gallery'));
+    if (gallerySnap.exists()) {
+      galleryData = gallerySnap.data().record || [];
+    } else {
+      const dataPath = path.resolve('./gallery-data.json');
+      if (fs.existsSync(dataPath)) {
+        galleryData = JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
+        await setDoc(doc(db, 'data', 'gallery'), { record: galleryData });
+      }
+    }
+
+    const reviewsSnap = await getDoc(doc(db, 'data', 'reviews'));
+    if (reviewsSnap.exists()) {
+      reviewsData = reviewsSnap.data().record || [];
+    } else {
+      const reviewsPath = path.resolve('./reviews.json');
+      if (fs.existsSync(reviewsPath)) {
+        reviewsData = JSON.parse(fs.readFileSync(reviewsPath, 'utf-8'));
+        await setDoc(doc(db, 'data', 'reviews'), { record: reviewsData });
+      }
+    }
+    console.log("Firebase synced successfully.");
+  } catch (error) {
+    console.error("Error syncing with Firebase:", error);
   }
 }
+
+// Call sync immediately to load data from Firebase on startup
+syncData();
 
 const uploadsDir = path.resolve('./public/uploads');
 if (!fs.existsSync(uploadsDir)) {
@@ -78,37 +71,38 @@ const storage = multer.diskStorage({
 })
 const upload = multer({ storage: storage })
 
-
-let reviewsData = [];
-const reviewsPath = path.resolve('./reviews.json');
-if (fs.existsSync(reviewsPath)) {
-  try {
-    reviewsData = JSON.parse(fs.readFileSync(reviewsPath, 'utf-8'));
-  } catch (e) {
-    console.error("Failed to parse local reviews data");
-  }
-}
-
 app.get('/api/reviews', (req, res) => {
   res.json({ record: reviewsData });
 });
 
-app.post('/api/reviews', (req, res) => {
+app.post('/api/reviews', async (req, res) => {
   const newReview = req.body;
   newReview.timestamp = Date.now();
   reviewsData.unshift(newReview);
-  fs.writeFileSync(reviewsPath, JSON.stringify(reviewsData, null, 2));
-  res.json({ success: true });
+  
+  try {
+    await setDoc(doc(db, 'data', 'reviews'), { record: reviewsData });
+    res.json({ success: true });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: "Failed to save to database" });
+  }
 });
 
 app.get('/api/gallery', (req, res) => {
   res.json({ record: galleryData });
 });
 
-app.put('/api/gallery', (req, res) => {
+app.put('/api/gallery', async (req, res) => {
   galleryData = req.body;
-  fs.writeFileSync(dataPath, JSON.stringify(galleryData, null, 2));
-  res.json({ success: true });
+  
+  try {
+    await setDoc(doc(db, 'data', 'gallery'), { record: galleryData });
+    res.json({ success: true });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: "Failed to save to database" });
+  }
 });
 
 app.post('/api/upload', upload.single('image'), (req, res) => {
